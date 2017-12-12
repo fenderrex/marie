@@ -1,0 +1,335 @@
+	org 0200		//CMD to Hex
+//i was not in class but in cort for this assinmant 
+
+//Skipcond 800 if AC > 0,
+//Skipcond 400 if AC = 0,
+//Skipcond 000 if AC < 0
+//problem  1
+load henry
+subt susan
+Skipcond 000// if AC > 0 if after removing susan from henry are still have some left then we know henry was biger so we DONT skip
+jump MultiTo25
+jump MultiTo15//else
+print1, load tickets//end else #batch script
+
+output
+
+
+//problem 2
+//load two
+//Store multiplyDigitA
+
+
+aForeLoop, load number1 //should end with 400
+store DigitB//store what we need to repetivly add in DigitB
+
+load one
+store multiplyDigitB// set to 2
+
+load number1
+
+//add offset//if larger than 9 char overflow occurs... must proform this to each digits place... 
+output
+
+load forloopsize
+subt one
+store forloopsize
+
+
+Skipcond 400// if AC = 0
+jump MultiACBymultiplyDigitB
+
+
+load forloopsize
+
+Skipcond 400// if AC = 0
+jump aForeLoop
+
+
+load return
+output
+
+//problem 3	
+load string	
+store stringIndex 
+
+load h
+store tempChar
+JnS incert//this will set the current program counter to the Hex address at incert
+load e
+store tempChar
+JnS incert
+load l
+store tempChar
+JnS incert
+load l
+store tempChar
+JnS incert
+load o
+store tempChar
+JnS incert
+
+//reset index pointers
+load stringIndex
+store string
+
+//set loop size
+load five
+store printSize
+
+pp,	JnS strPrint
+load printSize
+subt one
+store printSize
+Skipcond 400
+jump pp
+
+
+load return
+output
+//problem 4
+
+
+load string	
+store stringIndex 
+
+load b
+store tempChar
+JnS incert//this will set the current program counter to the Hex address at incert
+load i
+store tempChar
+JnS incert
+load r
+store tempChar
+JnS incert
+load d
+store tempChar
+JnS incert
+load s
+store tempChar
+JnS incert
+load colon
+store tempChar
+JnS incert
+load space
+store tempChar
+JnS incert
+
+//reset index pointers
+load stringIndex
+store string
+
+//set loop size
+load six
+store printSize
+
+bp,	JnS strPrint
+load printSize
+subt one
+store printSize
+Skipcond 400
+jump bp
+
+
+
+load cats
+store numerator
+load dogs
+store denominator
+JnS	devide
+load count
+add offset
+output
+load remainder
+output
+
+
+
+
+halt
+
+
+devide,	HEX 000// denominator, numerator  >> remainder, count
+	load numerator
+	//store tt
+	test,	load numerator
+	subt denominator
+	store numerator
+	
+	//count it
+	load count
+	add one
+	store count
+	
+	//if we have some more numerator do again
+	load numerator
+	
+	Skipcond 000//if we have some more numerator do again
+	jump test
+	
+	Skipcond 800//if we are negative rewind and get the diffrence
+	jump getRemainder
+	
+	jumpI devide//return
+	//numerator
+	getRemainder,	load count
+	subt one
+	store count//remove one from count
+	load numerator
+	add denominator//add the denominator back to pre last test
+	store remainder
+	jumpI devide//return
+	
+	halt
+	
+	
+		
+	
+	
+	
+	
+incert,	HEX 000
+
+
+	
+
+	//load the char we where passed
+	load tempChar	//hmm this wont like a loop lets make a function!
+	StoreI string
+
+		//increment
+	load string
+	add one
+	store string
+	
+	jumpI incert//this will set the program counter back
+
+strPrint,	HEX 000
+
+	loadI string
+	output
+	
+
+	//load the char we where passed
+	//load tempChar	//hmm this wont like a loop lets make a function!
+	
+
+	//increment
+	load string
+	add one
+	store string
+	
+	jumpI strPrint//this will set the program counter back
+
+
+
+
+
+// add DigitB to number1 till multiplyDigitB is zero
+MultiACBymultiplyDigitB, load number1 
+
+	//store DigitB
+	add DigitB
+	store number1
+	
+	load lostone
+	subt one
+	store lostone
+	//Skipcond 400// if AC = 0
+	//jump PrintN1 
+	
+	A,	load multiplyDigitB//step
+	subt one
+	store multiplyDigitB
+
+	
+	Skipcond 400// if AC = 0
+	jump MultiACBymultiplyDigitB
+	jump aForeLoop
+
+
+
+
+	
+
+
+PrintN1,	load number1
+add offset
+output
+jump A
+
+
+
+
+
+
+
+	
+//function tools
+MultiTo25, Load tickets//okay yes I should load a count and skip baced on that count and the units muiltiplyed.... but i named the function so ill do it on the problem 2 
+	add five
+	store tickets
+	subt twFive
+	Skipcond 400//if AC = 0,
+	jump MultiTo25
+	jump print1
+MultiTo15, Load tickets
+	add five
+	store tickets
+	subt fifteen
+	Skipcond 400//if AC = 0,
+	jump MultiTo15
+	jump print1
+	
+	tempIndex, dec 0
+
+	string,	hex	0100
+	stringIndex,	dec 0
+	printIndex,	dec 0
+	printSize,	dec 0
+	
+	space, 	hex 20 //space char
+	return, hex 0A // \n char
+	colon,	hex 3a
+	h,	hex 68
+	e,	hex 65
+	l,	hex 6C
+	o,	hex 6F
+	
+	b,	hex 62
+	i,	hex 69
+	r,	hex 72
+	d,	hex 64
+	s,	hex 73
+	
+	tempChar,	hex 0000
+	
+	cats,	dec 25
+	dogs,	dec 5
+	denominator,	dec 0
+	numerator,	dec 0
+	remainder,	dec 0
+	count,	dec 0
+	
+	
+
+	
+	
+	offset,	dec 48//dec to ascii offset
+	point,	hex 0130
+	henry,	dec 5	  //var/5
+	susan,	dec 4   //var/8
+	tickets,	dec 5  //var/3
+	
+	lostone,	dec	1
+	number1,	dec 25
+
+	multiplyDigitB,	dec 0
+	DigitB,	dec 0
+	one,	dec 1
+	two,	dec 2
+	forloopsize,	dec 5//we remove one with Skipcond
+	five,	dec 5
+	six,	dec 6
+	twFive,	dec	25
+	fifteen,	dec	15
